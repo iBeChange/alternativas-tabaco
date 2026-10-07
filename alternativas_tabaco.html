@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<title>Alternativas al tabaco</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#8F8FE0; --purple-light:#EAEAFA;
+    --green:#8FBFA0; --green-light:#E6F2EA;
+    --ink:#17324A; --ink-soft:#5C7489;
+    --bg:#FAF9FC; --card:#FFFFFF; --line:#E9E7F5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  .app{max-width:480px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding-top:env(safe-area-inset-top);}
+  h1,h2,h3{margin:0 0 6px; font-weight:800; color:var(--ink);}
+  p{margin:0 0 14px; color:var(--ink-soft); line-height:1.5;}
+  .content{flex:1; padding:22px 20px 40px;}
+  .topbar{display:flex; align-items:center; gap:10px; padding:18px 20px 6px;}
+  .back{display:flex; align-items:center; gap:4px; color:var(--purple); font-weight:700; font-size:14px; cursor:pointer;}
+  .back svg{width:16px; height:16px;}
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--purple); background:var(--purple-light); display:inline-block; padding:6px 14px; border-radius:999px; margin-bottom:16px;}
+  .btn{width:100%; padding:15px; border-radius:14px; border:none; font-weight:700; font-size:15.5px; cursor:pointer; background:var(--purple); color:#fff;}
+  /* intro */
+  .intro{text-align:center; padding-top:18vh;}
+  .intro h1{font-size:28px; margin-bottom:10px;}
+  /* list */
+  .cat-card{display:flex; align-items:center; gap:16px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:16px; margin-bottom:13px; cursor:pointer; box-shadow:0 1px 3px rgba(23,50,74,0.05);}
+  .cat-icon{width:52px; height:52px; min-width:52px; border-radius:16px; display:flex; align-items:center; justify-content:center;}
+  .cat-icon svg{width:26px; height:26px; stroke:#fff; fill:none; stroke-width:1.7;}
+  .cat-card h3{font-size:16px; margin:0;}
+  .chev{margin-left:auto; color:#C4C1DE;}
+  /* category detail */
+  .cat-desc{border-radius:16px; padding:16px 18px; margin-bottom:24px; font-size:14.5px; line-height:1.5;}
+  .res-list{display:flex; flex-direction:column; gap:14px;}
+  .res-card{display:flex; align-items:center; gap:16px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:16px 18px; box-shadow:0 1px 3px rgba(23,50,74,0.05);}
+  .res-icon{width:60px; height:60px; min-width:60px; border-radius:18px; display:flex; align-items:center; justify-content:center;}
+  .res-icon svg{width:30px; height:30px; stroke:#fff; fill:none; stroke-width:1.7;}
+  .res-card h3{font-size:15.5px; margin:0; line-height:1.3;}
+</style>
+</head>
+<body><div id="root" class="app"></div>
+<script>
+const CATS = [
+  { title:"Estimulante", icon:"spark", color:"#F0A857", light:"#FDF1E2", desc:"A veces, el tabaco se utiliza para despejarse y mejorar la atención.",
+    items:[
+      {t:"Bebe café o té", icon:"cup"},
+      {t:"Sal a caminar o correr y entra en contacto con el sol", icon:"walk"},
+      {t:"Escucha música estimulante", icon:"headphones"}
+    ]},
+  { title:"Tener algo en las manos", icon:"hand", color:"#8F8FE0", light:"#EEEEFA", desc:"Fumar puede utilizarse como recurso gestual.",
+    items:[
+      {t:"Trata de tener un bolígrafo a mano", icon:"pen"},
+      {t:"Lleva contigo un anillo", icon:"ring"},
+      {t:"Consigue una pelota antiestrés", icon:"ball"}
+    ]},
+  { title:"Placer - Relajación", icon:"lotus", color:"#6FB98F", light:"#E7F4EC", desc:"A veces, fumar se utiliza para desconectar y calmarse.",
+    items:[
+      {t:"Date un baño relajante", icon:"bath"},
+      {t:"Escucha música calmada", icon:"headphones"},
+      {t:"Realiza ejercicios de Mindfulness", icon:"lotus"},
+      {t:"Inicia una lectura", icon:"book"}
+    ]},
+  { title:"Cuando te sientes mal", icon:"heart", color:"#6B9BD1", light:"#E8F0F9", desc:"En ocasiones, fumar se utiliza para aliviar el estrés, la ansiedad o momentos difíciles.",
+    items:[
+      {t:"Realiza ejercicios de respiración profunda", icon:"breath"},
+      {t:"Habla con alguien sobre tus preocupaciones", icon:"chat"},
+      {t:"Prueba a escribir cómo te sientes", icon:"write"},
+      {t:"Date un masaje relajante", icon:"massage"}
+    ]},
+  { title:"Automatismos", icon:"repeat", color:"#E0899A", light:"#FBEAEE", desc:"Fumar también puede ser algo automático.",
+    items:[
+      {t:"Bebe un trago de agua", icon:"water"},
+      {t:"Sal a caminar", icon:"walk"},
+      {t:"Coge la pelota antiestrés", icon:"ball"}
+    ]}
+];
+
+const ICONS = {
+  cup:'<path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z"/><path d="M17 9h2a2 2 0 0 1 0 4h-2"/><path d="M8 3v2M11 3v2M14 3v2"/>',
+  walk:'<circle cx="13" cy="4" r="1.6"/><path d="M11 22l1-6-3-2 1-5 4-1 3 3 3 1M9 14l-3 2v6"/>',
+  headphones:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/>',
+  pen:'<path d="M3 21l3.5-1 11-11-2.5-2.5-11 11L3 21z"/><path d="M14.5 5.5l2.5 2.5"/>',
+  ring:'<circle cx="12" cy="15" r="5"/><path d="M9 10l3-7 3 7"/>',
+  ball:'<circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+  bath:'<path d="M3 11h18v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-3z"/><path d="M5 11V6a2 2 0 0 1 3-1.7"/><path d="M3 21h18"/>',
+  lotus:'<path d="M12 21c-4-2-6-5-6-9 3 0 5 1.5 6 4 1-2.5 3-4 6-4 0 4-2 7-6 9z"/><path d="M12 12V3"/>',
+  book:'<path d="M4 5c3-1.5 6-1.5 8 0v14c-2-1.5-5-1.5-8 0V5z"/><path d="M20 5c-3-1.5-6-1.5-8 0v14c2-1.5 5-1.5 8 0V5z"/>',
+  breath:'<circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/>',
+  chat:'<path d="M4 4h16v11H8l-4 4V4z"/>',
+  write:'<path d="M5 3h10l4 4v14H5V3z"/><path d="M9 11h6M9 15h6"/>',
+  massage:'<circle cx="8" cy="8" r="3"/><path d="M3 21c0-5 2-8 5-8s5 3 5 8"/><circle cx="17" cy="8" r="3"/><path d="M12 21c0-5 2-8 5-8s5 3 5 8"/>',
+  water:'<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>',
+  spark:'<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>',
+  hand:'<path d="M8 13V5a1.5 1.5 0 0 1 3 0v6M11 11V3.5a1.5 1.5 0 0 1 3 0V11M14 11.5V5a1.5 1.5 0 0 1 3 0v8M8 13l-2-1.5A1.5 1.5 0 0 0 4 13.8L8.5 21h7a4 4 0 0 0 4-4v-4.5"/>',
+  heart:'<path d="M12 21s-7-4.4-9.5-8.8C.8 8 2 4.5 5.4 4c2-.3 3.6.7 4.6 2.3C11 4.7 12.6 3.7 14.6 4c3.4.5 4.6 4 3.9 7.2C16 15.6 12 21 12 21z"/>',
+  repeat:'<path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>'
+};
+function icon(name){ return `<svg viewBox="0 0 24 24">${ICONS[name]||ICONS.ball}</svg>`; }
+const chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>';
+const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>';
+const backIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>';
+
+let screen = "intro"; // intro | list | category
+let catIndex = null;
+const root = document.getElementById("root");
+
+function goList(){ screen="list"; render(); }
+function openCat(i){ screen="category"; catIndex=i; render(); window.scrollTo(0,0); }
+function backToList(){ screen="list"; catIndex=null; render(); window.scrollTo(0,0); }
+
+function render(){
+  let html = "";
+  if(screen==="intro"){
+    html = `<div class="content intro">
+      <h1>Alternativas<br>al tabaco</h1>
+      <p>Pequeños recursos para los momentos en los que te apetece fumar.</p>
+      <button class="btn" onclick="goList()" style="margin-top:20px;">Empezar</button>
+    </div>`;
+  }
+  else if(screen==="list"){
+    html = `<div class="topbar"></div><div class="content">
+      <span class="eyebrow">Alternativas al tabaco</span>
+      <h2 style="margin-bottom:18px;">Elige una situación</h2>`;
+    CATS.forEach((c,i)=>{
+      html += `<div class="cat-card" onclick="openCat(${i})">
+        <div class="cat-icon" style="background:${c.color};">${icon(c.icon)}</div>
+        <h3>${i+1}. ${c.title}</h3>
+        <div class="chev">${chevR}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  else if(screen==="category"){
+    const cat = CATS[catIndex];
+    html = `<div class="topbar"><div class="back" onclick="backToList()">${backIcon} Atrás</div></div>
+    <div class="content">
+      <span class="eyebrow" style="background:${cat.light}; color:${cat.color};">${catIndex+1}. ${cat.title}</span>
+      <div class="cat-desc" style="background:${cat.light}; color:var(--ink);">${cat.desc}</div>
+      <div class="res-list">
+        ${cat.items.map(it=>`<div class="res-card">
+          <div class="res-icon" style="background:${cat.color};">${icon(it.icon)}</div>
+          <h3>${it.t}</h3>
+        </div>`).join("")}
+      </div>
+    </div>`;
+  }
+  root.innerHTML = html;
+}
+render();
+</script>
+</body>
+</html>
