@@ -16,7 +16,7 @@
   body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
   .app{max-width:480px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding-top:env(safe-area-inset-top);}
   h1,h2,h3{margin:0 0 6px; font-weight:800; color:var(--ink);}
-  p{margin:0 0 14px; color:var(--ink-soft); line-height:1.5;}
+  p{margin:0 0 14px; color:#45607A; font-size:15.5px; font-weight:500; line-height:1.55;}
   .content{flex:1; padding:22px 20px 40px;}
   .topbar{display:flex; align-items:center; gap:10px; padding:18px 20px 6px;}
   .back{display:flex; align-items:center; gap:4px; color:var(--purple); font-weight:700; font-size:14px; cursor:pointer;}
@@ -33,7 +33,14 @@
   .cat-card h3{font-size:16px; margin:0;}
   .chev{margin-left:auto; color:#C4C1DE;}
   /* category detail */
-  .cat-desc{border-radius:16px; padding:16px 18px; margin-bottom:24px; font-size:14.5px; line-height:1.5;}
+  .cat-desc{border-radius:16px; padding:18px; margin-bottom:24px; font-size:16.5px; font-weight:600; line-height:1.5;}
+  .nav-row{margin-top:30px; padding-top:22px; border-top:1px solid var(--line);}
+  .nav-row .label{font-size:13px; font-weight:700; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .nav-icons{display:flex; gap:12px; overflow-x:auto; padding-bottom:4px;}
+  .nav-icon-btn{display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; min-width:56px;}
+  .nav-icon-circle{width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center;}
+  .nav-icon-circle svg{width:22px; height:22px; stroke:#fff; fill:none; stroke-width:1.7;}
+  .nav-icon-btn span{font-size:10.5px; font-weight:600; color:var(--ink-soft); text-align:center; line-height:1.2;}
   .res-list{display:flex; flex-direction:column; gap:14px;}
   .res-card{display:flex; align-items:center; gap:16px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:16px 18px; box-shadow:0 1px 3px rgba(23,50,74,0.05);}
   .res-icon{width:60px; height:60px; min-width:60px; border-radius:18px; display:flex; align-items:center; justify-content:center;}
@@ -44,7 +51,7 @@
 <body><div id="root" class="app"></div>
 <script>
 const CATS = [
-  { title:"Estimulante", icon:"spark", color:"#F0A857", light:"#FDF1E2", desc:"A veces, el tabaco se utiliza para despejarse y mejorar la atención.",
+  { title:"Para darte energía", icon:"spark", color:"#F0A857", light:"#FDF1E2", desc:"A veces, el tabaco se utiliza para despejarse y mejorar la atención.",
     items:[
       {t:"Bebe café o té", icon:"cup"},
       {t:"Sal a caminar o correr y entra en contacto con el sol", icon:"walk"},
@@ -144,6 +151,15 @@ function render(){
           <div class="res-icon" style="background:${cat.color};">${icon(it.icon)}</div>
           <h3>${it.t}</h3>
         </div>`).join("")}
+      </div>
+      <div class="nav-row">
+        <span class="label">Otras situaciones</span>
+        <div class="nav-icons">
+          ${CATS.map((c,i)=> i===catIndex ? "" : `<div class="nav-icon-btn" onclick="openCat(${i})">
+            <div class="nav-icon-circle" style="background:${c.color};">${icon(c.icon)}</div>
+            <span>${c.title}</span>
+          </div>`).join("")}
+        </div>
       </div>
     </div>`;
   }
